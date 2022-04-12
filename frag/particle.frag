@@ -50,11 +50,11 @@ void main(){
     
     vec3 color = texture2D(u_tex0, nuv).rgb;
     float intensity = (0.72*color.g + 0.21*color.r + 0.07*color.b);
-    // float n = random(uv*u_time);
-    float n = random(uv);
+    float n = random(uv*u_time);
+    // float n = random(uv);
     if(n < intensity){
         
-        gl_FragColor = vec4(vec3(1.0), 1.);
+        gl_FragColor = vec4(vec3(1.0) * vec3(1.0, 0.6745, 0.6745), 1.);
     }
     else{
         gl_FragColor = vec4(vec3(0.0), 1.);
