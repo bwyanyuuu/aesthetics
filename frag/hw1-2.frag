@@ -1,3 +1,5 @@
+// https://www.shadertoy.com/view/MdSfWK
+// finish 
 // ref image: http://www.boredpanda.com/single-line-plotter-scribbles-sergej-stoppel/
 // ( doing it simpler: circles instead of scribbles ;-) )
 #ifdef GL_ES
@@ -14,6 +16,7 @@ uniform sampler2D u_tex1;
 //#define T(U) length(texture(iChannel0, (U)/R).rgb)
     
 #define rnd(P)  fract( sin( dot(P,vec2(12.1,31.7)) + 0.*u_time )*43758.5453123)
+#define rnd1(P)  fract( sin( P )*43758.5453123)
 #define rnd2(P) fract( sin( (P) * mat2(12.1,-37.4,-17.3,31.7) )*43758.5453123)
 
 #define C(U,P,r) smoothstep(1.5,0.,abs(length(P-U)-r))                       // ring
@@ -73,7 +76,7 @@ void main()
     vec2 R = u_resolution.xy;
     vec2 U = gl_FragCoord.xy;
     vec4 O;
-    O = vec4(0., 0., 0., 1.);
+    O = vec4(0.,0., 0., 1.);
     // Rotate( ( 2.0 * gl_FragCoord.xy - u_resolution.xy ) / u_resolution.x, 0.2 +u_time * 0.03 );
     for (float j = -L; j <=L; j++)    // test potential circle centers in a window around U
         for (float i = -L; i <=L; i++) {
@@ -85,8 +88,23 @@ void main()
             if ( rnd(P) < (v) / r * 4. * d / L * T * T ) {         // draw circle with probability
                 // O += C(U,P,r)*.2 ; // * (1.-texture(iChannel0, (U)/R)); // colored variant
                 // O += drawCircle(U, P, r*0.3); // * (1.-texture(iChannel0, (U)/R)); // colored variant
-                O += vec4(BokehLayer(U, P, 3.0 * vec3( 0.4, 0.1, 0.2 ) ,r*.5), 1.);
+                O += vec4(BokehLayer(U, P, 10.0 * vec3(0.102, mix(0.1961, 0.3294, sin(u_time/3.)/2.+.5), 0.4),1.5), 1.);
             }
         }
     gl_FragColor = O;
+
+
+
+    // O = vec4(1.,1., 1., 1.);
+    // for (float j = -L; j <=L; j++)    // test potential circle centers in a window around U
+    //     for (float i = -L; i <=L; i++) {
+    //      // vec2 P = U+vec2(i,j);
+    //         vec2 P = floor( U/T + vec2(i,j) ) *T;          // potential circle center
+    //         P += T*(rnd2(P)-.5);
+    //         float v = texture2D(u_tex1, (P)/R).r,                                // target grey value
+    //               r = mix(2., L*T ,v);                     // target radius
+    //         if ( rnd(P) < (1.-v)/ r*4.*d /L*T*T )          // draw circle with probability
+    //             O -= C(U,P,r)*.2 ; // * (1.-texture(iChannel0, (U)/R)); // colored variant
+    //     }
+    // gl_FragColor =1.- O;    
 }

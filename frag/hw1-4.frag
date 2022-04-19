@@ -39,7 +39,7 @@ void main(){
     // vec2 uvs = uv * 100.0; // xy 軸同比例的放大
     vec2 mouse = u_mouse / u_resolution;
     // float size = 30./ pow(length(uv - u_mouse), 2.);
-    float size = 5.;
+    float size = 1.;
     vec2 big = vec2(u_resolution.x / size, u_resolution.y / size);
     // vec2 big = u_mouse;
     vec2 uvs = uv * big; // xy 軸用不同比例的放大
@@ -51,10 +51,9 @@ void main(){
     vec3 color = texture2D(u_tex0, nuv).rgb;
     float intensity = (0.72*color.g + 0.21*color.r + 0.07*color.b);
     float n = random(uv*u_time);
-    // float n = random(uv);
     if(n < intensity){
         
-        gl_FragColor = vec4(vec3(1.0) * vec3(1.0, 0.6745, 0.6745), 1.);
+        gl_FragColor = vec4(1.);
     }
     else{
         gl_FragColor = vec4(vec3(0.0), 1.);
