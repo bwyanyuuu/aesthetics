@@ -29,7 +29,9 @@ void main()
             float v = (0.72*color.g + 0.21*color.r + 0.07*color.b);
             float r = mix(2., L * T ,v);
             if ( rnd(P) < (v) / r * 4. * d / L * T * T ) {
-                O += vec4(circle(U, P, 10.0 * vec3(0.102, mix(0.1961, 0.3294, sin(u_time/3.)/2.+.5), 0.4),1.5), 1.);
+                O += vec4(circle(U, P, 10.0 * vec3(0.102, mix(0.1961, 0.3294, sin(u_time/3.)/2.+.5), 0.4),1.1+v), 1.);
+                
+                // O += vec4(circle(U, P, 5.*color,1.5), 1.);
             }
         }
     gl_FragColor = O;

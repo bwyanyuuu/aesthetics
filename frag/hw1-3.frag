@@ -10,7 +10,7 @@ uniform sampler2D u_tex1;
     
 #define rnd(P)  fract( sin( dot(P,vec2(12.1,31.7)) + 0.*u_time )*43758.5453123)
 #define rnd2(P) fract( sin( (P) * mat2(12.1,-37.4,-17.3,31.7) )*43758.5453123)
-#define circle(uv, p, s) vec3(0.7804, 0.2941, 0.0667)*(1.0 - smoothstep(0.0, s, length(uv-p)))
+#define circle(uv, p, s) vec3(0.2667, 0.8902, 1.0)*(1.0 - smoothstep(0.0, s, length(uv-p)))
 
 const float a = exp( -400. * 0.025 ) * 0.3;
 const float L = 8., T = 4.,  d = 1.; 
