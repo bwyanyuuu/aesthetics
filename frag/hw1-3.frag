@@ -10,7 +10,7 @@ uniform sampler2D u_tex1;
     
 #define rnd(P)  fract( sin( dot(P,vec2(12.1,31.7)) + 0.*u_time )*43758.5453123)
 #define rnd2(P) fract( sin( (P) * mat2(12.1,-37.4,-17.3,31.7) )*43758.5453123)
-#define circle(uv, p, s) 1.0 - smoothstep(0.0, s, length(uv-p))
+#define circle(uv, p, s) vec3(0.7804, 0.2941, 0.0667)*(1.0 - smoothstep(0.0, s, length(uv-p)))
 
 const float a = exp( -400. * 0.025 ) * 0.3;
 const float L = 8., T = 4.,  d = 1.; 
@@ -25,10 +25,11 @@ void main()
         for (float i = -L; i <= L; i++) {
             vec2 P = floor( U / T + vec2(i, j) ) * T;
             P += T * (rnd2(P) - .5);
-            float v = texture2D(u_tex1, P / R).r;
+            vec3 color = texture2D(u_tex1, P / R).rgb;
+            float v = (0.72*color.g + 0.21*color.r + 0.07*color.b);
             float r = mix(2., L * T , v);
             if ( rnd(P) < (v) / r * 4. * d / L * T * T ) {
-                O += circle(U, P, r*.3);
+                O += vec4(circle(U, P, r*.3), 1.);
             }
         }
     gl_FragColor = O;
