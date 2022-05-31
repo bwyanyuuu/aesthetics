@@ -99,7 +99,7 @@ void main()
     //讀取第一列由左至右的粒子資訊P,若P.w粒子生存,以length(P.xy-U)著色, P的資訊以座標系統是以pixel為單位
     for (float x=0.5; x<=N; x++) {
         vec4 P = T(vec2(x,0.5));// head state: P, a, t ;
-        if (P.w>0.) O += (1.-step(0.0015, length((P.xy-U)/R)))* vec4(D(P.xy+randomPos(u_time)).xyz*0.5, 1.);
+        if (P.w>0.) O += (1. - step(0.0015, length((P.xy-U)/R)))* vec4(D(P.xy+randomPos(u_time)).xyz*0.3, 1.);
     }
 
 //--STEP3.像素著色後，更新第一列粒子們新位置
