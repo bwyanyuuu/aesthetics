@@ -45,9 +45,9 @@ class Button {
         this.y = y_;
         this.r = r_;
         this.active = false;
-        this.rr = 255;
-        this.gg = 255;
-        this.bb = 0;
+        this.rr = 230;
+        this.gg = 230;
+        this.bb = 230;
     }
     // Is a point inside the doorbell? (used for mouse rollover, etc.)
     contains(mx, my) {
@@ -57,15 +57,15 @@ class Button {
     
     switchColor(){
         if(this.active){
-            this.rr = 255;
-            this.gg = 255;
-            this.bb = 0;
+            this.rr = 230;
+            this.gg = 230;
+            this.bb = 230;
             this.active = false;
         }
         else{
-            this.rr = 255;
-            this.gg = 0;
-            this.bb = 255;
+            this.rr = 180;
+            this.gg = 180;
+            this.bb = 180;
             this.active = true;
         }
     }
@@ -73,7 +73,7 @@ class Button {
     display(mx, my) {
         // 邊框
         colorMode(RGB)
-        stroke(0, 0, 255);
+        stroke(255, 255, 255);
         strokeWeight(2);
         // noStroke()
 

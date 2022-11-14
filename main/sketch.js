@@ -23,8 +23,8 @@ function setup() {
     button_tune = new Button(windowWidth*0.1, windowHeight*0.9, 30)
     button_drum = new Button(windowWidth*0.2, windowHeight*0.9, 30)
     // need to be distory
-    button_tunePatch = new Button(windowWidth*0.1, windowHeight*0.8, 30)
-    button_drumPatch = new Button(windowWidth*0.2, windowHeight*0.8, 30)
+    // button_tunePatch = new Button(windowWidth*0.1, windowHeight*0.8, 30)
+    button_drumPatch = new Button(windowWidth*0.3, windowHeight*0.9, 30)
     filter = createSlider(0, 360, 327, 1).position(windowWidth*0.4, windowHeight*0.9)
     bpm = createSlider(0, 220, 160, 1).position(windowWidth*0.6, windowHeight*0.9)
 }
@@ -37,7 +37,7 @@ function draw() {
     button_tune.display(mouseX, mouseY)
     button_drum.display(mouseX, mouseY)
     // need to be distory
-    button_tunePatch.display(mouseX, mouseY)
+    // button_tunePatch.display(mouseX, mouseY)
     button_drumPatch.display(mouseX, mouseY)
 
     translate(width / 2, height / 2)
@@ -110,12 +110,12 @@ function mouseClicked(){
         Pd.start()
         // Pd.send('start', [1])
     }
-    if(button_tunePatch.contains(mouseX, mouseY)){
-        // button_tunePatch.switchColor()
-        // frame = 6
-        // Pd.start()
+    // if(button_tunePatch.contains(mouseX, mouseY)){
+    //     // button_tunePatch.switchColor()
+    //     // frame = 6
+    //     // Pd.start()
 
-    }
+    // }
     if(button_drum.contains(mouseX, mouseY)){
         button_drum.switchColor()
         drum_active = ~drum_active
