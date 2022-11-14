@@ -108,11 +108,13 @@ function mouseClicked(){
         button_tune.switchColor()
         tune_active = ~tune_active
         Pd.start()
-        Pd.send('start', [1])
+        // Pd.send('start', [1])
     }
     if(button_tunePatch.contains(mouseX, mouseY)){
-        button_tunePatch.switchColor()
-        frame = 6
+        // button_tunePatch.switchColor()
+        // frame = 6
+        // Pd.start()
+
     }
     if(button_drum.contains(mouseX, mouseY)){
         button_drum.switchColor()
@@ -127,7 +129,7 @@ function mouseClicked(){
 
     Pd.receive('haha', function(args) {
         outMidiNo = args*1.0;
-        frame = 1
+        frame = 6
         // dispfreq = "Frequency：" + Math.floor(args*100)/100 + " Hz";
         // document.getElementById("pdMidi").innerHTML = dispfreq;
         

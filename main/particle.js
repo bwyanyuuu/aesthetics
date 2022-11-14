@@ -2,7 +2,7 @@ class Particle{
     constructor(mode, rad, hue){
         this.pos = p5.Vector.random2D().mult(rad)//createVector(rad * cos(t), rad * sin(t))
         this.vel = createVector(0, 0)
-        this.acc = this.pos.copy().normalize().mult(10)// p5.Vector.random2D().normalize().mult(1.5)
+        this.acc = this.pos.copy().normalize().mult(5)// p5.Vector.random2D().normalize().mult(1.5)
 
         this.r = hue //map(this.pos.x, 0, width, 255, 0)
         this.g = 0 //map(this.pos.y, 0, height, 0, 255)
