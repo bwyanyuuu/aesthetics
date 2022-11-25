@@ -10,6 +10,8 @@ var circle_speed = 0.2 // (0.1, 1, 0.1, 0.05)
 var circle_radius = 70
 var button_tune
 var button_drum
+var button_play
+var play_active = false
 var tune_active = false
 var drum_active = false
 // need to be distory
@@ -17,16 +19,18 @@ var drum_active = false
 // var button_drumPatch
 var filter
 var bpm
+var bpm_value = 0
 function setup() {
     createCanvas(windowWidth, windowHeight)
     angleMode(DEGREES)
-    button_tune = new Button(windowWidth*0.1, windowHeight*0.9, 30)
-    button_drum = new Button(windowWidth*0.2, windowHeight*0.9, 30)
+    button_play = new Button(windowWidth*0.1, windowHeight*0.9, 30)
+    button_tune = new Button(windowWidth*0.2, windowHeight*0.9, 30)
+    button_drum = new Button(windowWidth*0.3, windowHeight*0.9, 30)
     // need to be distory
     // button_tunePatch = new Button(windowWidth*0.1, windowHeight*0.8, 30)
     // button_drumPatch = new Button(windowWidth*0.2, windowHeight*0.8, 30)
     filter = createSlider(0, 360, 327, 1).position(windowWidth*0.4, windowHeight*0.9)
-    bpm = createSlider(0, 220, 160, 1).position(windowWidth*0.6, windowHeight*0.9)
+    bpm = createSlider(130, 360, 200, 1).position(windowWidth*0.6, windowHeight*0.9)
 }
 
 function draw() {
@@ -34,6 +38,7 @@ function draw() {
     background(30)
 
     // panel
+    button_play.display(mouseX, mouseY)
     button_tune.display(mouseX, mouseY)
     button_drum.display(mouseX, mouseY)
     // need to be distory
@@ -70,7 +75,7 @@ function draw() {
 
     // circles
     if(drum_active){
-    
+        // console.log("drum")
         noFill()
         strokeWeight(1)
         
@@ -99,18 +104,35 @@ function draw() {
     }
     // console.log(circle_part, circle_partActive, circle_partTurn)
     // con
+    if(bpm.value() != bpm_value){
+        bpm_value = bpm.value()
+        Pd.send('speed', [bpm_value])
+        console.log("bpm", bpm_value, typeof(bpm_value))
+    }
 
 }
 
 function mouseClicked(){
     
+    if(button_play.contains(mouseX, mouseY)){
+        button_play.switchColor()
+        if(!play_active){
+            Pd.start()
+            console.log("play start")
+            tune_active = true
+            drum_active = true
+        }
+        
+        // Pd.send('start', [1])
+    }
     // console.log('pressed')
     if(button_tune.contains(mouseX, mouseY)){
         button_tune.switchColor()
-        tune_active = ~tune_active
-        drum_active = ~drum_active
-        Pd.start()
-        // Pd.send('start', [1])
+        console.log("tune", tune_active)
+        if(!tune_active) Pd.send('melody_switch', [1])
+        else Pd.send('melody_switch', [0])
+        tune_active = !tune_active
+        
     }
     // if(button_tunePatch.contains(mouseX, mouseY)){
     //     button_tunePatch.switchColor()
@@ -118,7 +140,9 @@ function mouseClicked(){
     // }
     if(button_drum.contains(mouseX, mouseY)){
         button_drum.switchColor()
-        drum_active = ~drum_active
+        if(!drum_active) Pd.send('drum_switch', [1])
+        else Pd.send('drum_switch', [0])
+        drum_active = !drum_active
     }
     // if(button_drumPatch.contains(mouseX, mouseY)){
     //     button_drumPatch.switchColor()
