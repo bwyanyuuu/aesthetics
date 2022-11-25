@@ -14,7 +14,6 @@ var button_play
 var play_active = false
 var tune_active = false
 var drum_active = false
-// need to be distory
 // var button_tunePatch
 // var button_drumPatch
 var filter
