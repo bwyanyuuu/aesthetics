@@ -18,6 +18,8 @@ var drum_active = false
 // var button_tunePatch
 // var button_drumPatch
 var filter
+var filter_value
+var filter_color
 var bpm
 var bpm_value = 0
 function setup() {
@@ -29,7 +31,7 @@ function setup() {
     // need to be distory
     // button_tunePatch = new Button(windowWidth*0.1, windowHeight*0.8, 30)
     // button_drumPatch = new Button(windowWidth*0.2, windowHeight*0.8, 30)
-    filter = createSlider(0, 360, 327, 1).position(windowWidth*0.4, windowHeight*0.9)
+    filter = createSlider(100, 2000, 327, 1).position(windowWidth*0.4, windowHeight*0.9)
     bpm = createSlider(130, 360, 200, 1).position(windowWidth*0.6, windowHeight*0.9)
 }
 
@@ -56,7 +58,7 @@ function draw() {
         // }
         if(frame > 0){
             for(var i = 0; i < 50; i++){
-                p = new Particle(1, circle_radius, filter.value())
+                p = new Particle(1, circle_radius, filter_color)
                 particles.push(p)
             }
             frame--
@@ -64,7 +66,7 @@ function draw() {
 
         for(var i = 0; i < particles.length; i++){
             if(particles[i].a > 0){
-                particles[i].update(filter.value())
+                particles[i].update(filter_color)
                 particles[i].show()
             }
             else{
@@ -80,7 +82,7 @@ function draw() {
         strokeWeight(1)
         
         for(var n = 0; n < 6; n++){
-            stroke(filter.value(), 30, 100)
+            stroke(filter_color, 30, 100)
             beginShape()
             for(var i = 0; i < 360; i += 3){
                 var rad = map(sin(i * circle_part + frameCount), -1, 1, circle_radius - 30, circle_radius)
@@ -109,21 +111,26 @@ function draw() {
         Pd.send('speed', [360-bpm_value+130])
         console.log("bpm", bpm_value, 360-bpm_value+130)
     }
+    if(filter.value() != filter_value){
+        filter_value = filter.value()
+        filter_color = map(filter_value, 100, 2000, 0, 360)
+        Pd.send('filter', [filter_value])
+        console.log("filter", filter_value)
+    }
 
 }
 
 function mouseClicked(){
     
     if(button_play.contains(mouseX, mouseY)){
-        button_play.switchColor()
         if(!play_active){
+            button_play.switchColor()
             Pd.start()
             console.log("play start")
             tune_active = true
             drum_active = true
+            play_active = true
         }
-        
-        // Pd.send('start', [1])
     }
     // console.log('pressed')
     if(button_tune.contains(mouseX, mouseY)){
