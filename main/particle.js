@@ -1,8 +1,8 @@
 class Particle{
     constructor(mode, rad, hue){
         this.pos = p5.Vector.random2D().mult(rad)//createVector(rad * cos(t), rad * sin(t))
-        this.vel = createVector(0, 0)
-        this.acc = this.pos.copy().normalize().mult(5)// p5.Vector.random2D().normalize().mult(1.5)
+        this.vel = this.pos.copy().normalize().mult(4)//createVector(0, 0)
+        this.acc = this.pos.copy().normalize().mult(0.2)// p5.Vector.random2D().normalize().mult(1.5)
 
         this.r = hue //map(this.pos.x, 0, width, 255, 0)
         this.g = 0 //map(this.pos.y, 0, height, 0, 255)
@@ -12,10 +12,10 @@ class Particle{
         this.mode = mode
     }
     update(hue){
-        var m = map(sin(frameCount * 6), -1, 1, 0.4, 0.6)
-        this.acc.mult(m)
+        // var m = map(sin(frameCount * 6), -1, 1, 0.4, 0.6)
+        // this.acc.mult(m)
 
-        this.vel.add(this.acc)
+        // this.vel.add(this.acc)
         this.pos.add(this.vel)
         
         // gradient from white to pink
@@ -26,7 +26,7 @@ class Particle{
         }
 
         if (dist(width / 2, height / 2, this.pos.x, this.pos.y) > 80){
-            this.a -= 10
+            this.a -= 5
         }
     }
     show(){
@@ -45,9 +45,9 @@ class Button {
         this.y = y_;
         this.r = r_;
         this.active = false;
-        this.rr = 230;
-        this.gg = 230;
-        this.bb = 230;
+        this.rr = 255;
+        this.gg = 255;
+        this.bb = 0;
     }
     // Is a point inside the doorbell? (used for mouse rollover, etc.)
     contains(mx, my) {
@@ -57,15 +57,15 @@ class Button {
     
     switchColor(){
         if(this.active){
-            this.rr = 230;
-            this.gg = 230;
-            this.bb = 230;
+            this.rr = 255;
+            this.gg = 255;
+            this.bb = 0;
             this.active = false;
         }
         else{
-            this.rr = 180;
-            this.gg = 180;
-            this.bb = 180;
+            this.rr = 255;
+            this.gg = 0;
+            this.bb = 255;
             this.active = true;
         }
     }
@@ -73,7 +73,7 @@ class Button {
     display(mx, my) {
         // 邊框
         colorMode(RGB)
-        stroke(255, 255, 255);
+        stroke(0, 0, 255);
         strokeWeight(2);
         // noStroke()
 
