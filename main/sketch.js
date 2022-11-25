@@ -106,8 +106,8 @@ function draw() {
     // con
     if(bpm.value() != bpm_value){
         bpm_value = bpm.value()
-        Pd.send('speed', [bpm_value])
-        console.log("bpm", bpm_value, typeof(bpm_value))
+        Pd.send('speed', [360-bpm_value+130])
+        console.log("bpm", bpm_value, 360-bpm_value+130)
     }
 
 }
