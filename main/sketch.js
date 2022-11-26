@@ -193,6 +193,10 @@ function mouseClicked(){
         outMidiNo = args*1.0;
         if(!circle_partActive) circle_part += 2
         circle_partActive = true
+        
+    });
+    Pd.receive('snare', function(args) {
+        outMidiNo = args*1.0;
         particles2_spawn = true
         
     });

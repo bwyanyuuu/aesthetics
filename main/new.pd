@@ -145,6 +145,8 @@
 #X obj 453 968 lop~ 2000;
 #X obj 724 241 sel 0;
 #X obj 720 198 random 3;
+#X obj 66 844 s snare;
+#X obj 67 903 s hihat;
 #X connect 0 0 55 0;
 #X connect 1 0 10 0;
 #X connect 2 0 4 0;
@@ -262,6 +264,7 @@
 #X connect 92 0 104 0;
 #X connect 93 0 96 0;
 #X connect 93 0 95 0;
+#X connect 93 0 134 0;
 #X connect 94 0 92 1;
 #X connect 95 0 100 0;
 #X connect 96 0 94 0;
@@ -286,6 +289,7 @@
 #X connect 114 0 115 0;
 #X connect 115 0 112 0;
 #X connect 116 0 113 0;
+#X connect 116 0 135 0;
 #X connect 117 0 121 0;
 #X connect 117 1 118 0;
 #X connect 118 0 119 0;
