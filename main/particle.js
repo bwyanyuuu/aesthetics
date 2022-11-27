@@ -1,77 +1,43 @@
 class Particle{
-    constructor(mode, rad, hue){
-        this.pos = p5.Vector.random2D().mult(rad) // createVector(rad * cos(t), rad * sin(t))
-        this.vel = this.pos.copy().normalize().mult(4) // createVector(0, 0)
-        this.acc = this.pos.copy().normalize().mult(0.2) // p5.Vector.random2D().normalize().mult(1.5)
+    constructor(rad, hue){
+        this.pos = p5.Vector.random2D().mult(rad)
+        this.vel = this.pos.copy().normalize().mult(4)
 
-        this.r = hue // map(this.pos.x, 0, width, 255, 0)
-        this.g = 0 // map(this.pos.y, 0, height, 0, 255)
-        this.b = 100 // map(dist(width / 2, height / 2, this.pos.x, this.pos.y), 0, width / 2, 0, 255)
-        this.a = 255;
-
-        this.mode = mode
+        this.r = hue
+        this.g = 0
+        this.b = 100
+        this.a = 255
     }
     update(hue){
-        // var m = map(sin(frameCount * 6), -1, 1, 0.4, 0.6)
-        // this.acc.mult(m)
-
-        // this.vel.add(this.acc)
         this.pos.add(this.vel)
         
-        // gradient from white to pink
-        if(this.mode){
-            this.r = hue // map(this.a, 0, 360, 321, 321)
-            this.g = map(this.a, 0, 255, 0, 73)
-            this.b = map(this.a, 0, 255, 100, 93)
-        }
-
-        if (dist(width / 2, height / 2, this.pos.x, this.pos.y) > 80){
-            this.a -= 5
-        }
+        // gradient from white to color
+        this.r = hue
+        this.g = map(this.a, 0, 255, 0, 73)
+        this.b = map(this.a, 0, 255, 100, 93)
+        
+        this.a -= 5
     }
     show(){
         noStroke()
-        // colorMode(HSB, 360, 100, 100)
         fill(this.r, this.g, this.b, this.a)
-        // console.log(this.r)
         ellipse(this.pos.x, this.pos.y, 3)
     }
 }
 
 class Particle2{
     constructor(x, y){
-        this.pos = createVector(x, y) // createVector(rad * cos(t), rad * sin(t))
-        this.vel = p5.Vector.random2D().mult(3) // createVector(0, 0)
-        this.acc = createVector(0, 0) // this.pos.copy().normalize().mult(0.2) // p5.Vector.random2D().normalize().mult(1.5)
-
-        this.r = hue // map(this.pos.x, 0, width, 255, 0)
-        this.g = 0 // map(this.pos.y, 0, height, 0, 255)
-        this.b = 100 // map(dist(width / 2, height / 2, this.pos.x, this.pos.y), 0, width / 2, 0, 255)
+        this.pos = createVector(x, y)
+        this.vel = p5.Vector.random2D().mult(3)
         this.a = 255;
     }
-    update(hue){
-        // var m = map(sin(frameCount * 6), -1, 1, 0.4, 0.6)
-        // this.acc.mult(m)
-
-        // this.vel.add(this.acc)
+    update(){
         this.pos.add(this.vel)
-        
-        // gradient from white to pink
-        // if(this.mode){
-        //     this.r = hue // map(this.a, 0, 360, 321, 321)
-        //     this.g = map(this.a, 0, 255, 0, 73)
-        //     this.b = map(this.a, 0, 255, 100, 93)
-        // }
-
-        if (dist(width / 2, height / 2, this.pos.x, this.pos.y) > 80){
-            this.a -= 5
-        }
+        this.a -= 5
     }
     show(){
         noStroke()
-        // colorMode(HSB, 360, 100, 100)
-        fill(this.r, this.g, this.b, this.a)
-        // console.log(this.r)
+        fill(0, 0, 100)
         ellipse(this.pos.x, this.pos.y, 3)
     }
 }
@@ -87,9 +53,8 @@ class Button {
         this.gg = 230;
         this.bb = 230;
     }
-    // Is a point inside the doorbell? (used for mouse rollover, etc.)
+    
     contains(mx, my) {
-        // if(dist(mx, my, this.x, this.y) < this.r) console.log('contain')
         return dist(mx, my, this.x, this.y) < this.r;
     }
     
@@ -109,17 +74,11 @@ class Button {
     }
     
     display(mx, my) {
-        // 邊框
         colorMode(RGB)
         stroke(255, 255, 255);
         strokeWeight(2);
-        // noStroke()
-
-        // circle
-        
         if(this.contains(mx, my)) fill(this.rr, this.gg, this.bb, 200);
         else fill(this.rr, this.gg, this.bb);
-        // ellipseMode(RADIUS);
         ellipse(this.x, this.y, this.r);
         noStroke();
     }

@@ -1,47 +1,33 @@
 <!DOCTYPE html>
 <html lang="">
-
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>p5.js</title>
-  <style>
-    body {
-      padding: 0;
-      margin: 0;
-      background-color: #1b1b1b;
-    }
-    /* button{
-      margin: 50% 50%;
-    }
-    input{
-      margin: 50% 50%;
-    } */
-  </style>
-  <script src="./p5.min.js"></script>
-  <!-- <script src="./p5.sound.min.js"></script> -->
-  <script src="./webpd-latest.js"></script>
-  <script src="./jquery-3.5.1.min.js"></script>
-  <script>
-      var patch
-      $.get('./new.pd', function(patchStr) {
-          patch = Pd.loadPatch(patchStr);
-          // Pd.start();
-          // Pd.start()
-       // Pd.emitter.setMaxListeners(12);
-          // const emitter = new EventEmitter()
-          // emitter.setMaxListeners(100)
-        })
-  </script>
-  <script src="./sketch.js"></script>
-  <script src="./particle.js"></script>
-  <!-- <button onclick="Pd.start();">Click </button> -->
-  <!-- <input type="button" onclick="Pd.start();"> -->
-</head>
-
-<body>
-  <main>
-  </main>
-</body>
-
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>p5.js</title>
+        <style>
+            body {
+                padding: 0;
+                margin: 0;
+                background-color: #1b1b1b;
+            }
+            p {
+              color: #d1d1d1;
+              font-size: 16pt;
+            }
+        </style>
+        <script src="./p5.min.js"></script>
+        <script src="./webpd-latest.js"></script>
+        <script src="./jquery-3.5.1.min.js"></script>
+        <script>
+            var patch;
+            $.get("./new.pd", function (patchStr) {
+                patch = Pd.loadPatch(patchStr);
+            });
+        </script>
+        <script src="./sketch.js"></script>
+        <script src="./particle.js"></script>
+    </head>
+    <body>
+        <main></main>
+    </body>
 </html>
