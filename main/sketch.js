@@ -26,7 +26,7 @@ var bpm_value = 0
 function setup() {
     createCanvas(windowWidth, windowHeight)
     angleMode(DEGREES)
-    p1 = createP('Play').position(windowWidth*0.1 - 15, windowHeight*0.89)
+    p1 = createP('Play').position(windowWidth*0.1 - 20, windowHeight*0.89)
     button_play = new Button(windowWidth*0.1, windowHeight*0.88, 30)
     p2 = createP('Melody').position(windowWidth*0.2 - 30, windowHeight*0.89)
     button_tune = new Button(windowWidth*0.2, windowHeight*0.88, 30)
@@ -34,8 +34,8 @@ function setup() {
     button_drum = new Button(windowWidth*0.3, windowHeight*0.88, 30)
     p4 = createP('Filter').position(windowWidth*0.4 + 45, windowHeight*0.89)
     filter = createSlider(100, 2000, 327, 1).position(windowWidth*0.4, windowHeight*0.88)
-    p6 = createP('Speed').position(windowWidth*0.55 + 45, windowHeight*0.89)
-    bpm = createSlider(130, 360, 200, 1).position(windowWidth*0.55, windowHeight*0.88)
+    p6 = createP('Speed').position(windowWidth*0.6 + 45, windowHeight*0.89)
+    bpm = createSlider(130, 360, 200, 1).position(windowWidth*0.6, windowHeight*0.88)
 }
 
 function draw() {
