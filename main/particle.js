@@ -19,9 +19,12 @@ class Particle{
         this.a -= 5
     }
     show(){
-        noStroke()
-        fill(this.r, this.g, this.b, this.a)
-        ellipse(this.pos.x, this.pos.y, 3)
+        colorMode(HSB, 360, 100, 100)
+        // noStroke()
+        stroke(this.r, this.g, this.b, this.a)
+        strokeWeight(5)
+        fill(this.r, this.g, this.b)
+        ellipse(this.pos.x, this.pos.y, 1)
     }
 }
 
@@ -36,9 +39,11 @@ class Particle2{
         this.a -= 5
     }
     show(){
-        noStroke()
+        colorMode(HSB, 360, 100, 100)
+        stroke(0, 0, 100)
+        strokeWeight(5)
         fill(0, 0, 100)
-        ellipse(this.pos.x, this.pos.y, 3)
+        ellipse(this.pos.x, this.pos.y, 1)
     }
 }
 

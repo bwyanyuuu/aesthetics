@@ -23,31 +23,82 @@ var filter_color
 var bpm
 var bpm_value = 0
 
+let vsPoint =
+"precision mediump float;" +
+"attribute vec3 aPosition;" +
+"attribute float aIndex;" +
+"uniform mat4 uModelViewMatrix;" +
+"uniform mat4 uProjectionMatrix;" +
+"uniform float uCount;" +
+"uniform vec2 uResolution;" +
+"void main() {" +
+"  vec3 p = aPosition;" +
+"  p.xy -= uResolution / 2.;" +
+"  vec4 positionVec4 =  vec4(p, 1.0);" +
+"  gl_Position = uProjectionMatrix * uModelViewMatrix * positionVec4;" +  // vertex shader 側は何もしない (pointing するだけ)
+"  gl_PointSize = 2.;" +
+"}";
+let fsPoint =
+"precision mediump float;" +
+"precision mediump int;" +
+"uniform vec3 uColor;" +
+"void main(){" +
+"  gl_FragColor = vec4(uColor, 1.);" +  // fragment shader 側は何もしない (color mapping するだけ)
+"}";
+let pBuf;
+let _gl, gl;
+let myPointShader;
+const NUM = 100;
+const POINT_NUM = NUM * NUM;
+let positions = new Float32Array(POINT_NUM * 3);  // type を変更しないこと
+let vec = new Float32Array(POINT_NUM * 3);
+let vel;
+let bg;
+
 function setup() {
-    createCanvas(windowWidth, windowHeight)
+    _gl = createCanvas(windowWidth, windowHeight, WEBGL)
     angleMode(DEGREES)
     p1 = createP('Play').position(windowWidth*0.1 - 20, windowHeight*0.89)
-    button_play = new Button(windowWidth*0.1, windowHeight*0.88, 30)
+    button_play = new Button(windowWidth*(-0.4), windowHeight*0.38, 30)
     p2 = createP('Melody').position(windowWidth*0.2 - 30, windowHeight*0.89)
-    button_tune = new Button(windowWidth*0.2, windowHeight*0.88, 30)
+    button_tune = new Button(windowWidth*(-0.3), windowHeight*0.38, 30)
     p3 = createP('Drum').position(windowWidth*0.3 - 25, windowHeight*0.89)
-    button_drum = new Button(windowWidth*0.3, windowHeight*0.88, 30)
+    button_drum = new Button(windowWidth*(-0.2), windowHeight*0.38, 30)
     p4 = createP('Filter').position(windowWidth*0.4 + 45, windowHeight*0.89)
     filter = createSlider(100, 2000, 327, 1).position(windowWidth*0.4, windowHeight*0.88)
     p6 = createP('Speed').position(windowWidth*0.6 + 45, windowHeight*0.89)
     bpm = createSlider(130, 360, 200, 1).position(windowWidth*0.6, windowHeight*0.88)
+    
+    gl = _gl.GL;
+    myPointShader = createShader(vsPoint, fsPoint);
+	initPositionsAndVectors();
+	vel = 2;
+    shader(myPointShader);
 }
 
 function draw() {
     colorMode(RGB)
     background(30)
 
+    // shader
+	colorMode(HSB,360,100,100,100);
+	let col = color(map(vel,0,10,10,360),map(vel,0,10,100,100),map(vel,0,10,100,100));
+	
+    myPointShader.setUniform("uCount", frameCount);  // custom uniform
+    myPointShader.setUniform("uResolution", [width, height]);  // custom uniform
+    myPointShader.setUniform("uColor", [red(col)/255.0, green(col)/255.0, blue(col)/255.0]);  // custom uniform
+	if (mouseIsPressed) { vel = 10;  updateVector(); }
+	else { vel *= 0.95; }  // decelerate
+	movePositions();  // move vertex
+    setVbo(POINT_NUM);  // pass to vertex shader via vbo, and draw
+    gl.drawArrays(gl.Points, 0, pBuf.model.vertices.length);
+
     // panel
     button_play.display(mouseX, mouseY)
     button_tune.display(mouseX, mouseY)
     button_drum.display(mouseX, mouseY)
 
-    translate(width / 2, height / 2)
+    // translate(width / 2, height / 2)
     colorMode(HSB, 360, 100, 100)
 
     // particles
