@@ -182,9 +182,11 @@ function draw() {
         // console.log("filter", filter_value)
     }
 }
-
-function mouseClicked(){
+function mousePressed(){
     col_hue = random(0, 360)
+}
+
+function mouseClicked(){    
     if(button_play.contains(mouseX, mouseY)){
         if(!play_active){
             button_play.switchColor()
@@ -233,7 +235,11 @@ function mouseClicked(){
 
     Pd.receive('snare', function(args) {
         outMidiNo = args*1.0;
-        particles2_spawn = true
-        
+        particles2_spawn = true        
+    })
+
+    Pd.receive('new', function(args) {
+        outMidiNo = args*1.0;
+        particles2_spawn = true        
     })
 }
