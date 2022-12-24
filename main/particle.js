@@ -60,7 +60,7 @@ class Button {
     }
     
     contains(mx, my) {
-        return dist(mx, my, this.x, this.y) < this.r;
+        return dist(mx-windowWidth/2, my-windowHeight/2, this.x, this.y) < this.r;
     }
     
     switchColor(){

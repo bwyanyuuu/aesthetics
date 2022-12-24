@@ -13,48 +13,35 @@ var circle_radius = 70
 var button_tune
 var button_drum
 var button_play
+var button_new
 var play_active = false
 var tune_active = false
 var drum_active = false
+var new_active = false
 var smallDrum_active = false
 var filter
 var filter_value
 var filter_color
 var bpm
 var bpm_value = 0
+var col
+var col_hue
 
-let vsPoint =
-"precision mediump float;" +
-"attribute vec3 aPosition;" +
-"attribute float aIndex;" +
-"uniform mat4 uModelViewMatrix;" +
-"uniform mat4 uProjectionMatrix;" +
-"uniform float uCount;" +
-"uniform vec2 uResolution;" +
-"void main() {" +
-"  vec3 p = aPosition;" +
-"  p.xy -= uResolution / 2.;" +
-"  vec4 positionVec4 =  vec4(p, 1.0);" +
-"  gl_Position = uProjectionMatrix * uModelViewMatrix * positionVec4;" +  // vertex shader 側は何もしない (pointing するだけ)
-"  gl_PointSize = 2.;" +
-"}";
-let fsPoint =
-"precision mediump float;" +
-"precision mediump int;" +
-"uniform vec3 uColor;" +
-"void main(){" +
-"  gl_FragColor = vec4(uColor, 1.);" +  // fragment shader 側は何もしない (color mapping するだけ)
-"}";
+// shader
 let pBuf;
 let _gl, gl;
-let myPointShader;
+let theShader;
 const NUM = 100;
 const POINT_NUM = NUM * NUM;
 let positions = new Float32Array(POINT_NUM * 3);  // type を変更しないこと
 let vec = new Float32Array(POINT_NUM * 3);
-let vel;
-let bg;
+let vel = 2;
+let win
 
+
+function preload(){
+    theShader = loadShader('shader.vert', 'shader.frag');
+}
 function setup() {
     _gl = createCanvas(windowWidth, windowHeight, WEBGL)
     angleMode(DEGREES)
@@ -68,12 +55,13 @@ function setup() {
     filter = createSlider(100, 2000, 327, 1).position(windowWidth*0.4, windowHeight*0.88)
     p6 = createP('Speed').position(windowWidth*0.6 + 45, windowHeight*0.89)
     bpm = createSlider(130, 360, 200, 1).position(windowWidth*0.6, windowHeight*0.88)
+    p7 = createP('New').position(windowWidth*0.75 + 45, windowHeight*0.89)
+    button_new = new Button(windowWidth*0.284, windowHeight*0.38, 30)
     
     gl = _gl.GL;
-    myPointShader = createShader(vsPoint, fsPoint);
 	initPositionsAndVectors();
-	vel = 2;
-    shader(myPointShader);
+    shader(theShader);
+    win = createVector(windowWidth/2, windowHeight/2)
 }
 
 function draw() {
@@ -81,22 +69,31 @@ function draw() {
     background(30)
 
     // shader
-	colorMode(HSB,360,100,100,100);
-	let col = color(map(vel,0,10,10,360),map(vel,0,10,100,100),map(vel,0,10,100,100));
+    if(new_active){
+        colorMode(HSB,360,100,100,100);
+        let col = color(col_hue, map(vel,0,10,0,100), 100);
+        
+        theShader.setUniform("uCount", frameCount);  // custom uniform
+        theShader.setUniform("uResolution", [width, height]);  // custom uniform
+        theShader.setUniform("uColor", [red(col)/255.0, green(col)/255.0, blue(col)/255.0]);  // custom uniform
+        if (mouseIsPressed) {
+            vel = 10;
+            var f = forcePoint()
+            // print(f.x, f.y)
+            updateVector(f.x, f.y);
+        }
+        else { vel *= 0.95; }  // decelerate
+        movePositions();  // move vertex
+        setVbo(POINT_NUM);  // pass to vertex shader via vbo, and draw
+        gl.drawArrays(gl.Points, 0, pBuf.model.vertices.length);
+    }
 	
-    myPointShader.setUniform("uCount", frameCount);  // custom uniform
-    myPointShader.setUniform("uResolution", [width, height]);  // custom uniform
-    myPointShader.setUniform("uColor", [red(col)/255.0, green(col)/255.0, blue(col)/255.0]);  // custom uniform
-	if (mouseIsPressed) { vel = 10;  updateVector(); }
-	else { vel *= 0.95; }  // decelerate
-	movePositions();  // move vertex
-    setVbo(POINT_NUM);  // pass to vertex shader via vbo, and draw
-    gl.drawArrays(gl.Points, 0, pBuf.model.vertices.length);
 
     // panel
     button_play.display(mouseX, mouseY)
     button_tune.display(mouseX, mouseY)
     button_drum.display(mouseX, mouseY)
+    button_new.display(mouseX, mouseY)
 
     // translate(width / 2, height / 2)
     colorMode(HSB, 360, 100, 100)
@@ -187,6 +184,7 @@ function draw() {
 }
 
 function mouseClicked(){
+    col_hue = random(0, 360)
     if(button_play.contains(mouseX, mouseY)){
         if(!play_active){
             button_play.switchColor()
@@ -194,6 +192,7 @@ function mouseClicked(){
             // console.log("play start")
             tune_active = true
             drum_active = true
+            new_active = true
             play_active = true
             smallDrum_active = true
         }
@@ -214,6 +213,10 @@ function mouseClicked(){
         else Pd.send('drum_switch', [0])
         drum_active = !drum_active
         smallDrum_active = !smallDrum_active
+    }
+
+    if(button_new.contains(mouseX, mouseY)){
+        new_active = !new_active
     }
 
     Pd.receive('haha', function(args) {
