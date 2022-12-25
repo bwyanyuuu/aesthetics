@@ -182,11 +182,11 @@ function draw() {
         // console.log("filter", filter_value)
     }
 }
-function mousePressed(){
-    col_hue = random(0, 360)
-}
+// function mousePressed(){
+//     col_hue = random(0, 360)
+// }
 
-function mouseClicked(){    
+function touchStarted(){    
     if(button_play.contains(mouseX, mouseY)){
         if(!play_active){
             button_play.switchColor()
@@ -220,6 +220,8 @@ function mouseClicked(){
     if(button_new.contains(mouseX, mouseY)){
         new_active = !new_active
     }
+
+    if(new_active) col_hue = random(0, 360)
 
     Pd.receive('haha', function(args) {
         outMidiNo = args*1.0;
