@@ -1,36 +1,52 @@
-function initPositionsAndVectors(){
-    let x, y;
-    for(let i = 0; i < POINT_NUM; i++){
-      x = map(i%NUM, 0, NUM-1, width/2-250, width/2+250);
-      y = map((i/NUM)%NUM, 0, NUM-1, height/2-250, height/2+250);
-      positions[i*3] = x;
-      positions[i*3+1] = y;
-      positions[i*3+2] = 0;
-      vec[i*3] = 0;
-      vec[i*3+1] = 0;
-      vec[i*3+2] = 0;
+class Particle{
+    constructor(i){
+        let x, y
+        x = map(i%NUM, 0, NUM-1, width/2-250, width/2+250);
+        y = map((i/NUM)%NUM, 0, NUM-1, height/2-250, height/2+250);
+        this.pos = createVector(x, y)
+        this.vec = createVector(0, 0)
+        this.idx = i
+    }
+    update(x, y){
+        let d = sqrt(sq(x - this.pos.x) + sq(y - this.pos.y)) * 5;
+        let ax = (x - this.pos.x) / d
+        let ay = (y - this.pos.y) / d
+        ax += this.vec.x
+        ay += this.vec.y
+        d = sqrt(sq(ax) + sq(ay));
+        this.vec.x = ax / d
+        this.vec.y = ay / d
+    }
+    move(array, vel){
+        this.pos.x += this.vec.x * vel
+        this.pos.y += this.vec.y * vel
+        array[this.idx * 3] = this.pos.x
+        array[this.idx * 3 + 1] = this.pos.y
     }
 }
-  
-function updateVector(x, y){
-    for(let i = 0; i < POINT_NUM; i++){
-        let d = sqrt(sq(x - positions[i*3]) + sq(y - positions[i*3+1])) * 5;
-        let vx = (x - positions[i*3]) / d;
-        let vy = (y - positions[i*3+1]) / d;
-        vx += vec[i*3];
-        vy += vec[i*3+1];
-        d = sqrt(sq(vx) + sq(vy));
-        vec[i*3] = vx / d;
-        vec[i*3+1] = vy / d;
+
+class ParticlePool{
+    constructor(num){
+        this.num = num
+        this.total = num * num
+        this.particles = []
+        for(let i = 0; i < this.total; i++){
+            var p = new Particle(i)
+            this.particles.push(p)
+            positions[i * 3 + 2] = 0
+        }
+    }
+    update(x, y){
+        for(let i = 0; i < this.total; i++){
+            this.particles[i].update(x, y)
+        }
+    }
+    move(vel){
+        for(let i = 0; i < this.total; i++){
+            this.particles[i].move(positions, vel)
+        }
     }
 }
-  
-function movePositions(){
-    for(let i = 0; i < POINT_NUM; i++){
-      positions[i*3] += vec[i*3] * vel;
-      positions[i*3+1] += vec[i*3+1] * vel;
-    }
-  }
   
 function setVbo(num){
     const gId = `myPoints|${num}`;

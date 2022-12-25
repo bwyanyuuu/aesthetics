@@ -5,10 +5,10 @@ let theShader
 const NUM = 100
 const POINT_NUM = NUM * NUM
 let positions = new Float32Array(POINT_NUM * 3)
-let vec = new Float32Array(POINT_NUM * 3)
 let vel = 2
 let win
 let col_hue
+let pool
 
 // === Tone.js starts ===
 function getRandomInt(max) {
@@ -111,7 +111,12 @@ function setup() {
     angleMode(DEGREES)
     
     gl = _gl.GL
-	initPositionsAndVectors()
+	// initPositionsAndVectors()
+    // for(let i = 0; i < POINT_NUM; i++){
+    //     var p = new Particle(i)
+    //     points.push(p)
+    // }
+    pool = new ParticlePool(NUM)
     shader(theShader)
     win = createVector(windowWidth/2, windowHeight/2)
 }
@@ -128,11 +133,20 @@ function draw() {
     if (mouseIsPressed) {
         vel = 10
         var f = forcePoint()
-        updateVector(f.x, f.y)
+        // updateVector(f.x, f.y)
+        // for(let i = 0; i < POINT_NUM; i++){
+        //     points[i].update(f.x, f.y)
+        // }
+        pool.update(f.x, f.y)
     }
     else vel *= 0.95
-    movePositions()
-    setVbo(POINT_NUM)
+    // movePositions()
+    // for(let i = 0; i < POINT_NUM; i++){
+    //     points[i].move(positions, vel)
+    // }
+    pool.move(vel)
+    // console.log(vel)
+    setVbo(POINT_NUM, pool.points)
     gl.drawArrays(gl.Points, 0, pBuf.model.vertices.length)
 }
 
