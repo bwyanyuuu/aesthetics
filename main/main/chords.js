@@ -1,76 +1,25 @@
-  const chords4566 = [
-    ["F3", "C4", "D4", "E4", "A4"], 
-    ["G3", "B4", "D4", "E4", "A4"], 
-    ["A3", "C4", "D4", "E4", "A4"], 
-    ["A3", "C4", "E4", "G4", "A4"]
-  ]
-  
-  const chords4566Arp = [
-    ["C5", "D5", "E5", "A5"], 
-    ["B5", "D5", "E5", "A5"], 
-    ["C5", "D5", "E5", "A5"], 
-    ["C5", "E5", "G5", "A5"]
-  ]
-  
-  const chords4536 = [
-    ["F2", "G3", "C4", "E4", "G4"], 
-    ["G2", "G3", "C4", "D4", "G4"], 
-    ["E2", "G3", "B3", "D4", "G4"], 
-    ["A2", "G3", "C4", "E4", "A4"],
-    ["D2", "D3", "A3", "C4", "F4"],
-    ["G2", "G3", "C4", "D4", "G4"],
-    ["C2", "C3", "G3", "C4", "F4"],
-    ["C2", "C3", "G3", "C4", "E4"]
-  ]
-  
-  const chords4536Arp = [
-    ["C5", "E5", "G5"], 
-    ["C5", "D5", "G5"], 
-    ["B4", "D5", "G5"], 
-    ["C5", "E5", "A5"],
-    ["A4", "C5", "F5"],
-    ["C5", "D5", "G5"],
-    ["G4", "C5", "F5"],
-    ["G4", "C5", "E5"]
-  ]
-  
-  const chords4361 = [
-    ["F2", "F3", "A3", "C4", "E4"], 
-    ["E2", "E3", "G#3", "B3", "D4"], 
-    ["A2", "G3", "C4", "E4", "G4"], 
-    ["G2", "F3", "Bb4", "D4", "F4"],
-    ["C2", "C3", "G3", "Bb4", "E4"],
-  ]
-  
-  const chords4361Arp = [
-    ["A4", "C5", "E5"], 
-    ["G#4", "B5", "D5"], 
-    ["C5", "E5", "G5"], 
-    ["Bb5", "D5", "F5"],
-    ["G4", "Bb5", "E5"],
-  ]
-  
-  const canon = [
-    ["C3", "C4", "G4", "C5", "E5"],
-    ["G2", "G3", "G4", "B4", "D5"],
-    ["A2", "A3", "D4", "A4", "C5"],
-    ["E2", "E3", "E4", "G4", "B4"],
-    ["F2", "F3", "C4", "F4", "A4"],
-    ["C2", "C3", "C4", "E4", "G4"],
-    ["G2", "G3", "C4", "F4", "A4"],
-    ["G2", "G3", "D4", "G4", "B4"],
-  ]
-  
-  const canonArp = [
-    ["G4", "C5", "E5"],
-    ["G4", "B4", "D5"],
-    ["D4", "A4", "C5"],
-    ["E4", "G4", "B4"],
-    ["C4", "F4", "A4"],
-    ["C4", "E4", "G4"],
-    ["C4", "F4", "A4"],
-    ["D4", "G4", "B4"],
-  ]
-  
-  const chordProgressionList = [canon, chords4566, chords4536, chords4361]
-  const arpList = [canonArp, chords4566Arp, chords4536Arp, chords4361Arp]
+const notes = ['A', 'B', 'C', 'D', 'E', 'F', 'G'];
+const addOctaveNumbers = (scale, octaveNumber) => scale.map(note => {
+  const firstOctaveNoteIndex = scale.indexOf('C') !== -1 ? scale.indexOf('C') : scale.indexOf('C#')
+  const noteOctaveNumber = scale.indexOf(note) < firstOctaveNoteIndex ? octaveNumber - 1 : octaveNumber;
+  return `${note}${noteOctaveNumber}`
+});
+function getRandomInt(max) {
+  return Math.floor(Math.random() * max);
+}
+const generateChords = (num_of_notes, octave_number) => {
+  let chord = []
+  let high_chord = []
+  let octave = octave_number
+  let index = getRandomInt(notes.length)
+  for (let i = 0; i < num_of_notes; i++) {
+    chord.push(`${notes[index]}${octave}`);
+    high_chord.push(`${notes[index]}${octave+1}`);
+    index += (getRandomInt(2)+1);
+    if (index >= notes.length) {
+      index -= notes.length
+      octave += 1
+    }
+  }
+  return [chord, high_chord];
+}
