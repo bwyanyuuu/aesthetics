@@ -67,12 +67,9 @@ function setVbo(num){
     gl.bufferSubData(gl.ARRAY_BUFFER, 0, positions);
 }
 
-let rad = 200
-let arc = 0
-let arcSpeed = 1
-let randomRange = 1
 function forcePoint(){
     arc += arcSpeed
     if(arc > 360) arc -= 360
     return createVector(cos(arc) + random(-randomRange, randomRange), sin(arc) + random(-randomRange, randomRange)).mult(rad).add(win)
+    // return createVector(cos(arc), sin(arc)).mult(rad).add(random(-randomRange, randomRange), random(-randomRange, randomRange)).add(win)
 }
