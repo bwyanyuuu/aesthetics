@@ -10,9 +10,11 @@ function getRandomInt(max) {
 const generateChords = (num_of_notes, octave_number) => {
   let chord = []
   let high_chord = []
+  let bass_note;
   let octave = octave_number
   let index = getRandomInt(notes.length)
   for (let i = 0; i < num_of_notes; i++) {
+    if (i==0) bass_note = `${notes[index]}${octave-1}`
     chord.push(`${notes[index]}${octave}`);
     high_chord.push(`${notes[index]}${octave+1}`);
     index += (getRandomInt(2)+1);
@@ -21,5 +23,5 @@ const generateChords = (num_of_notes, octave_number) => {
       octave += 1
     }
   }
-  return [chord, high_chord];
+  return [chord, high_chord, bass_note];
 }

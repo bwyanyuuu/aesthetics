@@ -61,9 +61,9 @@ const kick = new Tone.MembraneSynth({
     sustain: 0.3,
   }
 }).toDestination()
-// const test = new Tone.Oscillator("C4", "square").toDestination().start();
+const bass = new Tone.Oscillator(newchord[2], "triangle").toDestination();
+bass.volume.value = -15;
 // Effecters
-const sub_highcut = new Tone.Filter(200, "lowpass").toDestination();
 const lop = new Tone.Filter(20, "lowpass").toDestination();
 const lowcut = new Tone.Filter(20000, "highpass").toDestination();
 const reverb = new Tone.Freeverb().toDestination();
@@ -127,6 +127,7 @@ shift.connect(gainTwo.gain)
 
 polySine.connect(lop).connect(pingPong).connect(reverb).connect(allSideWidener)
 piano.connect(lop).connect(pingPong).connect(reverb).connect(allSideWidener)
+bass.connect(lop).connect(allMiddler)
 // === Tone.js ends ===
 
 function preload(){
@@ -171,7 +172,9 @@ function draw() {
 
 function startAction() {
   kick.triggerAttackRelease("C2", "4n")
-   
+  bass.volume.value = -15;
+  bass.start()
+  bass.frequency.rampTo(newchord[2]);
   poly_supersaw.forEach((supersaw,i) => {
     supersaw.start();
     supersaw.frequency.rampTo(newchord[0][i],0.1);
@@ -189,7 +192,8 @@ function startAction() {
   
 function stopAction() {
   lop.frequency.rampTo(20, 0.1);
-  
+  bass.volume.value = volMute;
+  bass.stop()
   poly_supersaw.forEach((supersaw) => {
     supersaw.volume.value = volMute;
     // supersaw.mute = true;
