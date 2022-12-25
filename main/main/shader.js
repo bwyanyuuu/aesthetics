@@ -70,6 +70,6 @@ function forcePoint(){
     return createVector(cos(arc) + random(-randomRange, randomRange), sin(arc) + random(-randomRange, randomRange)).mult(rad).add(win)
 }
   
-//   function keyPressed(){
-//     save("img_" + month() + '-' + day() + '_' + hour() + '-' + minute() + '-' + second() + ".jpg");
-//   }
+  function keyPressed(){
+    save("img_" + month() + '-' + day() + '_' + hour() + '-' + minute() + '-' + second() + ".jpg");
+  }
