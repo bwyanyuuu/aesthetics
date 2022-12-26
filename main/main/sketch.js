@@ -118,16 +118,16 @@ poly_supersaw.forEach((supersaw) => {
   supersaw.mute = true;
 });
 
+polySine.connect(lop).connect(pingPong).connect(reverb).connect(allSideWidener)
+piano.connect(lop).connect(pingPong).connect(reverb).connect(allSideWidener)
+bass.connect(lop).connect(allMiddler).connect(gainTwo)
+
 // Sidechain
 kick.connect(follower)
 follower.connect(signal)
 signal.connect(negate)
 negate.connect(shift)
 shift.connect(gainTwo.gain)
-
-polySine.connect(lop).connect(pingPong).connect(reverb).connect(allSideWidener)
-piano.connect(lop).connect(pingPong).connect(reverb).connect(allSideWidener)
-bass.connect(lop).connect(allMiddler)
 // === Tone.js ends ===
 
 function preload(){
@@ -172,34 +172,34 @@ function draw() {
 
 function startAction() {
   kick.triggerAttackRelease("C2", "4n")
-  bass.volume.value = -15;
+  bass.volume.rampTo(-15, 0.1);
   bass.start()
   bass.frequency.rampTo(newchord[2]);
   poly_supersaw.forEach((supersaw,i) => {
     supersaw.start();
     supersaw.frequency.rampTo(newchord[0][i],0.1);
-    supersaw.volume.value = -27;
+    supersaw.volume.rampTo(-27, 0.1);
   });
   
   lop.frequency.rampTo(20000, 0.1);
 
   pattern.values = newchord[1]
-  piano.volume.value = -15;
-  polySine.volume.value = -20;
+  piano.volume.rampTo(-15, 0.1);
+  polySine.volume.rampTo(-20, 0.1);
   pattern.start()
   Tone.Transport.start()
 }
   
 function stopAction() {
-  lop.frequency.rampTo(20, 0.1);
-  bass.volume.value = volMute;
-  bass.stop()
+  lop.frequency.rampTo(20, 0.3);
+  bass.volume.rampTo(volMute, 0.3);
+  //bass.mute = true;
   poly_supersaw.forEach((supersaw) => {
-    supersaw.volume.value = volMute;
-    // supersaw.mute = true;
+    supersaw.volume.rampTo(volMute, 0.3);
+    //supersaw.mute = true;
   });  
-  piano.volume.value = volMute;
-  polySine.volume.value = volMute;
+  piano.volume.rampTo(volMute, 0.3);
+  polySine.volume.rampTo(volMute, 0.3);
   pattern.stop()
   Tone.Transport.stop()
   newchord = generateChords(5, 3)
